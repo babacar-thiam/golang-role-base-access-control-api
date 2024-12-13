@@ -20,7 +20,6 @@ func main() {
 	}
 
 	// Run the application
-	if appErr := application.RunApp(); appErr != nil {
-		log.Fatalf("Error running application: %v", appErr)
-	}
+	log.Printf("Starting the application...")
+	application.RunApp()
 }

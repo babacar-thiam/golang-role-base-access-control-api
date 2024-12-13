@@ -9,11 +9,11 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-// Connect creates and return a new MySQL connecting u
+// Connect creates and returns a new MySQL connection
 // using the provided config
 func Connect(cfg *configs.Config) (*sql.DB, error) {
-	// Define the database source name(DSN)
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",
+	// Define the database source name (DSN) with parseTime=true
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true",
 		cfg.DBUser,
 		cfg.DBPassword,
 		cfg.DBHost,
