@@ -44,7 +44,7 @@ type LoginRequest struct {
 	Password string `json:"password"`
 }
 
-type Response struct {
+type LoginResponse struct {
 	Token string     `json:"token"`
 	User  *user.User `json:"user"`
 }

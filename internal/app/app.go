@@ -71,6 +71,7 @@ func (app *App) setupRoutes() {
 
 	// Public routes (no authentication required)
 	api.HandleFunc("/auth/register", authHandler.Register).Methods(http.MethodPost)
+	api.HandleFunc("/auth/login", authHandler.Login).Methods(http.MethodPost)
 
 	// Define role routes
 	api.HandleFunc("/roles", roleHandler.GetRoles).Methods(http.MethodGet)

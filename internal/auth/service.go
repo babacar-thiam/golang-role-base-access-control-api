@@ -24,6 +24,7 @@ func NewService(config *configs.Config, userRepo *user.Repository) *Service {
 	}
 }
 
+// Register registers a new user and return the user details
 func (s *Service) Register(req RegisterRequest) (*RegisterResponse, error) {
 	// Check if email already in use
 	existingUser, err := s.userRepo.FindByEmail(req.Email)
@@ -84,5 +85,34 @@ func (s *Service) Register(req RegisterRequest) (*RegisterResponse, error) {
 		Role:      newUser.Role,
 		CreatedAt: newUser.CreatedAt,
 		UpdatedAt: newUser.UpdatedAt,
+	}, nil
+}
+
+// Login authenticates the user with email and password
+func (s *Service) Login(req LoginRequest) (*LoginResponse, error) {
+	// Find user by email
+	userExist, err := s.userRepo.FindByEmail(req.Email)
+	if err != nil {
+		return nil, err
+	}
+	if userExist == nil {
+		return nil, errors.New("email not found")
+	}
+
+	// Verify the password
+	if pwdErr := bcrypt.CompareHashAndPassword([]byte(userExist.Password), []byte(req.Password)); pwdErr != nil {
+		return nil, errors.New("invalid password")
+	}
+
+	// Generate token
+	token, err := s.jwt.GenerateToken(userExist.ID, userExist.Email, userExist.Role)
+	if err != nil {
+		return nil, err
+	}
+
+	// LoginResponse with token and the user details
+	return &LoginResponse{
+		Token: token,
+		User:  userExist,
 	}, nil
 }

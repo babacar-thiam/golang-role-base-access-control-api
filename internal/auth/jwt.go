@@ -84,11 +84,3 @@ func (j *JWT) ExtractTokenFromHeader(authHeader string) (string, error) {
 
 	return parts[1], nil
 }
-
-// Custom errors
-var (
-	ErrInvalidToken     = errors.New("invalid token")
-	ErrExpiredToken     = errors.New("token has expired")
-	ErrMissingToken     = errors.New("token is missing")
-	ErrInvalidSignature = errors.New("invalid token signature")
-)
