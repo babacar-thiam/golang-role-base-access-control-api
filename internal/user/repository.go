@@ -17,12 +17,12 @@ func NewRepository(db *sql.DB) *Repository {
 }
 
 // Save saves a new user to the database
-func (r *Repository) Save(user User) error {
+func (r *Repository) Save(user *User) error {
 	// SQL query to insert a new user to the database
 	query := "insert into users (id, name, email, phone, password, role, created_at, updated_at) values (?, ?, ?, ?, ?, ?, ?, ?)"
 
 	// Execute the query
-	_, err := r.DB.Exec(query, user.ID, user.Name, user.Email, user.Phone, user.Role, user.CreatedAt, user.UpdatedAt)
+	_, err := r.DB.Exec(query, user.ID, user.Name, user.Email, user.Phone, user.Password, user.Role, user.CreatedAt, user.UpdatedAt)
 	if err != nil {
 		return fmt.Errorf("could not save user: %w", err)
 	}
@@ -59,7 +59,7 @@ func (r *Repository) FindByEmail(email string) (*User, error) {
 	query := "select id, name, email, phone, password, role, created_at, updated_at from users where email = ?"
 
 	// Execute the SQL query
-	err := r.DB.QueryRow(query, email).Scan(&user.ID, &user.Email, &user.Phone, &user.Password, &user.Role, &user.CreatedAt, &user.UpdatedAt)
+	err := r.DB.QueryRow(query, email).Scan(&user.ID, &user.Name, &user.Email, &user.Phone, &user.Password, &user.Role, &user.CreatedAt, &user.UpdatedAt)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, nil
@@ -80,7 +80,7 @@ func (r *Repository) FindByPhone(phone string) (*User, error) {
 	query := "select id, name, email, phone, password, role, created_at, updated_at from users where phone = ?"
 
 	// Execute the SQL query
-	err := r.DB.QueryRow(query, phone).Scan(&user.ID, &user.Email, &user.Phone, &user.Password, &user.Role, &user.CreatedAt, &user.UpdatedAt)
+	err := r.DB.QueryRow(query, phone).Scan(&user.ID, &user.Name, &user.Email, &user.Phone, &user.Password, &user.Role, &user.CreatedAt, &user.UpdatedAt)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, nil

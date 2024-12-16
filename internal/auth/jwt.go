@@ -19,8 +19,8 @@ func NewJWT(config *configs.Config) *JWT {
 	return &JWT{config: config}
 }
 
-// GenerateToken create a new JWT token
-func (j *JWT) GenerateToken(userID uuid.UUID, email, role string) (*TokenResponse, error) {
+// GenerateToken creates a new JWT token and returns the token string
+func (j *JWT) GenerateToken(userID uuid.UUID, email, role string) (string, error) {
 	expirationTime := time.Now().Add(24 * time.Hour)
 
 	claims := &Claims{
@@ -38,15 +38,10 @@ func (j *JWT) GenerateToken(userID uuid.UUID, email, role string) (*TokenRespons
 
 	tokenString, err := token.SignedString([]byte(j.config.JWTSecret))
 	if err != nil {
-		return nil, fmt.Errorf("failed to sign token: %w", err)
+		return "", fmt.Errorf("failed to sign token: %w", err)
 	}
 
-	return &TokenResponse{
-		AccessToken: tokenString,
-		TokenType:   "Bearer",
-		ExpiresIn:   expirationTime.Unix(),
-		IssuedAt:    time.Now(),
-	}, nil
+	return tokenString, nil
 }
 
 // ValidateToken validates the provided token string
