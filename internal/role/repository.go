@@ -46,6 +46,7 @@ func (r *Repository) FindByName(name string) (*Role, error) {
 		return nil, fmt.Errorf("error getting role: %v", err)
 	}
 
+	// Return the found role
 	return &role, nil
 }
 
@@ -77,5 +78,7 @@ func (r *Repository) FindAll() ([]Role, error) {
 	if rowErr := rows.Err(); rowErr != nil {
 		return nil, fmt.Errorf("error getting roles: %v", rowErr)
 	}
+
+	// Return the found roles
 	return roles, nil
 }
