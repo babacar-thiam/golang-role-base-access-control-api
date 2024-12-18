@@ -1,5 +1,3 @@
----
-
 ## **API Documentation**
 
 ### **Overview**
@@ -185,10 +183,3 @@ HTTP 200 OK
 | 500              | Internal server error              |
 
 ---
-
-### **Testing and Automation**
-
-- **Postman Collection**: Create a Postman collection for testing the endpoints.
-- **Swagger Documentation**: Use `swaggo` to auto-generate documentation for these endpoints.
-
-Would you like help with integrating Swagger (`swaggo`) or creating sample middleware for Go?
