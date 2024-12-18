@@ -64,7 +64,7 @@ func (j *JWT) ValidateToken(tokenString string) (*Claims, error) {
 		return nil, errors.New("invalid token")
 	}
 
-	if claims.ExpiresAt != nil && claims.IssuedAt.Before(time.Now()) {
+	if claims.ExpiresAt != nil && time.Now().After(claims.ExpiresAt.Time) {
 		return nil, errors.New("token is expired")
 	}
 

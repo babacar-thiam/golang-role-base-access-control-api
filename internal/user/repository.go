@@ -38,7 +38,7 @@ func (r *Repository) Find(id uuid.UUID) (*User, error) {
 	query := "select id, name, email, phone, password, role, created_at, updated_at from users where id = ?"
 
 	// Execute the SQL query
-	err := r.DB.QueryRow(query, id).Scan(&user.ID, &user.Email, &user.Phone, &user.Password, &user.Role, &user.CreatedAt, &user.UpdatedAt)
+	err := r.DB.QueryRow(query, id).Scan(&user.ID, &user.Name, &user.Email, &user.Phone, &user.Password, &user.Role, &user.CreatedAt, &user.UpdatedAt)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, nil
@@ -90,4 +90,35 @@ func (r *Repository) FindByPhone(phone string) (*User, error) {
 
 	// Return the found user
 	return &user, nil
+}
+
+// FindAll finds all the users
+func (r *Repository) FindAll() ([]User, error) {
+	// SQL query to fetch all users
+	query := "select id, name, email, phone, password, role, created_at, updated_at from users"
+
+	// Execute the query
+	rows, err := r.DB.Query(query)
+	if err != nil {
+		return nil, fmt.Errorf("could not get users: %w", err)
+	}
+
+	// Slice to store all users
+	var users []User
+
+	for rows.Next() {
+		var user User
+		scanErr := rows.Scan(&user.ID, &user.Name, &user.Email, &user.Phone, &user.Password, &user.Role, &user.CreatedAt, &user.UpdatedAt)
+		if scanErr != nil {
+			return nil, fmt.Errorf("could not scan user: %w", scanErr)
+		}
+		users = append(users, user)
+	}
+
+	// Check for errors encounter during iteration
+	if rowErr := rows.Err(); rowErr != nil {
+		return nil, fmt.Errorf("error getting roles: %v", rowErr)
+	}
+
+	return users, nil
 }

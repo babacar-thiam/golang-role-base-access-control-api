@@ -50,8 +50,8 @@ func (s *Service) Register(req RegisterRequest) (*RegisterResponse, error) {
 	}
 
 	// Hashed Password
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
-	if err != nil {
+	hashedPassword, hashErr := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
+	if hashErr != nil {
 		return nil, err
 	}
 

@@ -3,8 +3,10 @@ package database
 import (
 	"database/sql"
 	"github.com/google/uuid"
+	"golang.org/x/crypto/bcrypt"
 	"log"
 	"role-base-access-control-api/internal/role"
+	"role-base-access-control-api/internal/user"
 	"time"
 )
 
@@ -73,5 +75,81 @@ func SeedRoles(db *sql.DB) error {
 	}
 
 	log.Println("role seeding completed successfully")
+	return nil
+}
+
+// SeedAdmins creates initial admin users if they don't exist
+func SeedAdmins(db *sql.DB) error {
+	// Define the default admin users
+	defaultAdmins := []user.User{
+		{
+			ID:        uuid.New(),
+			Name:      "Admin User",
+			Email:     "admin@example.com",
+			Phone:     "221771009010",
+			Password:  "password",
+			Role:      "ADMIN",
+			CreatedAt: time.Now(),
+			UpdatedAt: time.Now(),
+		},
+		{
+			ID:        uuid.New(),
+			Name:      "Super Admin",
+			Email:     "super.admin@example.com",
+			Phone:     "221771009011",
+			Password:  "password",
+			Role:      "ADMIN",
+			CreatedAt: time.Now(),
+			UpdatedAt: time.Now(),
+		},
+	}
+
+	// Initialize the user repository
+	repo := user.NewRepository(db)
+
+	// Start the transaction
+	tx, err := db.Begin()
+	if err != nil {
+		return err
+	}
+
+	// Check and create each admin user
+	for _, admin := range defaultAdmins {
+		// Check if the admin already exists
+		existingAdmin, err := repo.FindByEmail(admin.Email)
+		if err != nil {
+			log.Printf("Error finding admin by email: %v", err)
+			return err
+		}
+
+		if existingAdmin != nil {
+			log.Printf("Admin already exists: %v", existingAdmin.Email)
+			continue
+		}
+
+		// Hash the password for the new admin
+		hashedPassword, hashErr := bcrypt.GenerateFromPassword([]byte(admin.Password), bcrypt.DefaultCost)
+		if hashErr != nil {
+			log.Printf("Error hashing password: %v", err)
+			return err
+		}
+		admin.Password = string(hashedPassword)
+
+		// Save the admin user
+		err = repo.Save(&admin)
+		if err != nil {
+			log.Printf("Error saving admin user: %v", err)
+			return err
+		}
+
+		log.Printf("Created admin user: %v", admin.Email)
+	}
+
+	// Commit transaction
+	if err = tx.Commit(); err != nil {
+		return err
+	}
+
+	log.Println("Admin users seeding completed successfully")
 	return nil
 }
