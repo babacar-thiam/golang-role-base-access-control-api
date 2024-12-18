@@ -15,6 +15,32 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/admin/roles": {
+            "get": {
+                "description": "Retrieves all roles from the system",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Get all roles",
+                "responses": {
+                    "200": {
+                        "description": "List of roles",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/role.Role"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/auth/login": {
             "post": {
                 "description": "Authenticate a user and return a JWT token",
@@ -83,33 +109,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/roles": {
-            "get": {
-                "description": "Retrieves all roles from the system",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Roles"
-                ],
-                "summary": "Get all roles",
-                "responses": {
-                    "200": {
-                        "description": "List of roles",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/role.Role"
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/users": {
+        "/users/all": {
             "get": {
                 "description": "Retrieves all users in the system",
                 "consumes": [

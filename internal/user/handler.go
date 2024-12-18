@@ -56,7 +56,7 @@ func (h *Handler) GetUser(w http.ResponseWriter, r *http.Request) {
 // @Accept json
 // @Produce json
 // @Success 200 {array} User "List of users"
-// @Router /users [get]
+// @Router /users/all [get]
 func (h *Handler) GetAllUsers(w http.ResponseWriter, r *http.Request) {
 
 	users, err := h.service.GetAll()
