@@ -83,6 +83,23 @@ info:
   title: Role-Based Access Control API
   version: "1.0"
 paths:
+  /admin/roles:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves all roles from the system
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of roles
+          schema:
+            items:
+              $ref: '#/definitions/role.Role'
+            type: array
+      summary: Get all roles
+      tags:
+      - Roles
   /auth/login:
     post:
       consumes:
@@ -127,40 +144,6 @@ paths:
       summary: Register a new user
       tags:
       - Auth
-  /roles:
-    get:
-      consumes:
-      - application/json
-      description: Retrieves all roles from the system
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: List of roles
-          schema:
-            items:
-              $ref: '#/definitions/role.Role'
-            type: array
-      summary: Get all roles
-      tags:
-      - Roles
-  /users:
-    get:
-      consumes:
-      - application/json
-      description: Retrieves all users in the system
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: List of users
-          schema:
-            items:
-              $ref: '#/definitions/user.User'
-            type: array
-      summary: Get all users
-      tags:
-      - Users
   /users/{id}:
     get:
       consumes:
@@ -180,6 +163,23 @@ paths:
           schema:
             $ref: '#/definitions/user.User'
       summary: Get user by ID
+      tags:
+      - Users
+  /users/all:
+    get:
+      consumes:
+      - application/json
+      description: Retrieves all users in the system
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of users
+          schema:
+            items:
+              $ref: '#/definitions/user.User'
+            type: array
+      summary: Get all users
       tags:
       - Users
 swagger: "2.0"

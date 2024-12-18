@@ -21,7 +21,7 @@ func NewHandler(service *Service) *Handler {
 // @Accept json
 // @Produce json
 // @Success 200 {array} Role "List of roles"
-// @Router /roles [get]
+// @Router /admin/roles [get]
 func (h *Handler) GetRoles(w http.ResponseWriter, r *http.Request) {
 	roles, err := h.service.GetAll()
 	if err != nil {
