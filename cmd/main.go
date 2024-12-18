@@ -1,3 +1,4 @@
+// cmd/main.go
 package main
 
 import (
@@ -6,6 +7,11 @@ import (
 	"role-base-access-control-api/internal/app"
 )
 
+// @title Role-Based Access Control API
+// @version 1.0
+// @description API for managing roles and users with RBAC.
+// @host localhost:3001
+// @BasePath /api/v1
 func main() {
 	// Load the application configuration
 	cfg, err := configs.LoadConfig()

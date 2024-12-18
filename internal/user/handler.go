@@ -16,6 +16,15 @@ func NewHandler(service *Service) *Handler {
 	return &Handler{service: service}
 }
 
+// GetUser handles getting a user by ID
+// @Summary Get user by ID
+// @Description Retrieves a user by their unique ID
+// @Tags Users
+// @Accept json
+// @Produce json
+// @Param id path string true "User ID"
+// @Success 200 {object} User "User data"
+// @Router /users/{id} [get]
 func (h *Handler) GetUser(w http.ResponseWriter, r *http.Request) {
 	// Extract user ID from the URL
 	idStr := mux.Vars(r)["id"]
@@ -40,6 +49,14 @@ func (h *Handler) GetUser(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// GetAllUsers handles retrieving all users
+// @Summary Get all users
+// @Description Retrieves all users in the system
+// @Tags Users
+// @Accept json
+// @Produce json
+// @Success 200 {array} User "List of users"
+// @Router /users [get]
 func (h *Handler) GetAllUsers(w http.ResponseWriter, r *http.Request) {
 
 	users, err := h.service.GetAll()

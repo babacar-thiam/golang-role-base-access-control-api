@@ -16,6 +16,14 @@ func NewHandler(service *Service) *Handler {
 }
 
 // Register handles the registration request
+// @Summary Register a new user
+// @Description Register a new user with the role of CLIENT or PROVIDER
+// @Tags Auth
+// @Accept json
+// @Produce json
+// @Param request body RegisterRequest true "Register Request"
+// @Success 201 {object} RegisterResponse
+// @Router /auth/register [post]
 func (h *Handler) Register(w http.ResponseWriter, r *http.Request) {
 	var req RegisterRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
@@ -51,6 +59,14 @@ func (h *Handler) Register(w http.ResponseWriter, r *http.Request) {
 }
 
 // Login handles the login HTTP request
+// @Summary User login
+// @Description Authenticate a user and return a JWT token
+// @Tags Auth
+// @Accept json
+// @Produce json
+// @Param request body LoginRequest true "Login Request"
+// @Success 200 {object} LoginResponse
+// @Router /auth/login [post]
 func (h *Handler) Login(w http.ResponseWriter, r *http.Request) {
 	var req LoginRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {

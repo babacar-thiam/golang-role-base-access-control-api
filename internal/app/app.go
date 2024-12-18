@@ -3,10 +3,12 @@ package app
 import (
 	"database/sql"
 	"github.com/gorilla/mux"
+	"github.com/swaggo/http-swagger"
 	"log"
 	"net/http"
 	"role-base-access-control-api/api/v1"
 	"role-base-access-control-api/configs"
+	_ "role-base-access-control-api/docs"
 	"role-base-access-control-api/internal/auth"
 	"role-base-access-control-api/internal/database"
 	"role-base-access-control-api/internal/role"
@@ -69,6 +71,9 @@ func NewApp(cfg *configs.Config) (*App, error) {
 
 	// Setup routes
 	app.setupRoutes()
+
+	// Swagger UI route
+	app.Router.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
 
 	return app, nil
 }
