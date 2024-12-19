@@ -1,12 +1,14 @@
 package v1
 
 import (
-	"github.com/gorilla/mux"
 	"role-base-access-control-api/internal/auth"
 	"role-base-access-control-api/internal/role"
 	"role-base-access-control-api/internal/user"
+
+	"github.com/gorilla/mux"
 )
 
+// API holds the handlers and middlewares for the API
 type API struct {
 	authHandler    *auth.Handler
 	roleHandler    *role.Handler
